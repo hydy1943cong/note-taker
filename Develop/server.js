@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const api = require('./routes/index');
-const notesRouter = require('./routes/notes');
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 
 // Middleware for parsing JSON and urlencoded form data
@@ -20,7 +19,7 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-app.get('/', (req, res) =>
+app.get('*', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/index.html'))
   );
 
