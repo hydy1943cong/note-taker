@@ -54,4 +54,25 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+  const noteId = req.params.id;
+
+  readFromFile('./db/db.json')
+    .then((data) => {
+      const notes = JSON.parse(data);
+      const updatedNotes = notes.filter(note => note.id !== noteId);
+      fs.writeFile('./db/db.json', JSON.stringify(updatedNotes, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+        }
+        res.status(200).json({ message: 'Note deleted successfully' });
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Error retrieving notes' });
+    });
+});
+
+
 module.exports = router;
